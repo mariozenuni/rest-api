@@ -46,4 +46,4 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 
 EXPOSE 9000
-CMD ["sh", "-c", "php artisan migrate --force && php-fpm"]
+CMD ["php-fpm"]
