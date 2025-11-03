@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Todo;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
 
 class TodosController extends Controller
 {
@@ -40,7 +41,7 @@ class TodosController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'completed' => 'boolean'
+            'completed' => 'integer'
         ]);
 
         $todo = Todo::create([  

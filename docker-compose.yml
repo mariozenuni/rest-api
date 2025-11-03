@@ -7,19 +7,29 @@ services:
       dockerfile: Dockerfile
     container_name: todos-rest-api
     restart: unless-stopped
-    ports:
-      - "8000:9000"
     volumes:
-      - .:/var/www/html:cached
+      - .:/var/www/html
     environment:
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE:-todos}
+      DB_USERNAME: ${DB_USERNAME:-todo_user}
+      DB_PASSWORD: ${DB_PASSWORD:-secretpassword}
     depends_on:
       - db
+
+  web:
+    image: nginx:latest
+    container_name: todos-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
 
   db:
     image: mysql:8.0

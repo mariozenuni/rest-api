@@ -17,3 +17,4 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::put('todos/{id}', [TodosController::class,'updateTodos']);
     Route::delete('todos/{id}', [TodosController::class,'deleteTodos']);
 });
+
