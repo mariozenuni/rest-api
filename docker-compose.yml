@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
@@ -8,13 +8,13 @@ services:
     container_name: todos-rest-api
     restart: unless-stopped
     ports:
-      - "8000:9000"   # Map host port 8000 to container 9000 (PHP-FPM)
+      - "8000:9000"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:cached 
     environment:
       DB_CONNECTION: mysql
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
+      DB_HOST: db
+      DB_PORT: 3306
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -22,7 +22,7 @@ services:
       - db
 
   db:
-    image: mysql:8
+    image: mysql:8.0
     container_name: todo-rest-api-db
     restart: unless-stopped
     environment:
@@ -33,7 +33,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql   # Persistent MySQL data
+      - db_data:/var/lib/mysql
 
 volumes:
-  db_data:   # Named volume for MySQL persistence
+  db_data:
