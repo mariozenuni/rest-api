@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todos-rest-api
+    restart: unless-stopped
+    ports:
+      - "8000:9000"   # Map host port 8000 to container 9000 (PHP-FPM)
+    volumes:
+      - .:/var/www/html
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    container_name: todo-rest-api-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql   # Persistent MySQL data
+
+volumes:
+  db_data:   # Named volume for MySQL persistence
